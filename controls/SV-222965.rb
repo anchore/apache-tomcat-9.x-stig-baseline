@@ -43,7 +43,7 @@ This is for illustration purposes only. The user must modify the LDAP settings o
   tag gtitle: 'SRG-APP-000172-AS-000121'
   tag fix_id: 'F-24626r426340_fix'
   tag 'documentable'
-  tag legacy: ['SV-111455', 'V-102513']
+  tag legacy: %w[SV-111455 V-102513]
   tag cci: ['CCI-000197']
   tag nist: ['IA-5 (1) (c)']
 
@@ -56,9 +56,11 @@ This is for illustration purposes only. The user must modify the LDAP settings o
     it { should include 'org.apache.catalina.realm.JNDIRealm' }
   end
 
-  compliant_connection_url = tomcat_server_file['//Realm[@className=\'org.apache.catalina.realm.JNDIRealm\']/@connectionURL'].collect { |x| x.match('ldaps') }
+  compliant_connection_url = tomcat_server_file['//Realm[@className=\'org.apache.catalina.realm.JNDIRealm\']/@connectionURL'].collect do |x|
+    x.match('ldaps')
+  end
 
-  describe 'The connectionURL element of the JDNDIRealm must use ldaps for encyption' do
+  describe 'The connectionURL element of the JNDIRealm must use ldaps for encyption' do
     subject { compliant_connection_url }
     it { should include 'ldaps' }
   end
