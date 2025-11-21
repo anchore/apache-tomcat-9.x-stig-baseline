@@ -3,7 +3,7 @@ control 'SV-222937' do
   desc 'When running Tomcat behind a load balancer or proxy, default behavior is for Tomcat to log the proxy or load balancer IP address as the client IP. Desired behavior is to log the actual client IP rather than the proxy IP address. The RemoteIpValve logging component instructs Tomcat to grab the HTTP header X-Forwarded-For and use that for access logging.
 
 Tomcat will identify 127.0.0.1, class A and class C RFC1918 addresses as internal proxy addresses; however, if the proxy has a routable IP or a class B private network address space (172.16.0.0/12), the user must also verify the "internalProxies setting is configured to reflect the proxy IP address.'
-  desc 'check', 'Review the System Security Plan and determine if the Tomcat server resides behind a proxy server or load balancer. If the Tomcat server is not behind a proxy server or load balancer, this requirement is NA. 
+  desc 'check', 'Review the System Security Plan and determine if the Tomcat server resides behind a proxy server or load balancer. If the Tomcat server is not behind a proxy server or load balancer, this requirement is NA.
 
 From the Tomcat server run the following command:
 
@@ -14,7 +14,7 @@ If the results are empty or if the requestAttributesEnabled setting is not confi
 sudo grep -i AccessLogValve $CATALINA_BASE/conf/server.xml file.
 
 If the requestAttributesEnabled setting is not configured as "True", this is a finding.'
-  desc 'fix', 'From the Tomcat server as a privileged user: 
+  desc 'fix', 'From the Tomcat server as a privileged user:
 
 Edit the $CATALINA_BASE/conf/server.xml file.
 
@@ -47,7 +47,7 @@ sudo systemctl tomcat daemon-reload'
   tag gtitle: 'SRG-APP-000089-AS-000050'
   tag fix_id: 'F-24598r426256_fix'
   tag 'documentable'
-  tag legacy: ['SV-111405', 'V-102457']
+  tag legacy: %w[SV-111405 V-102457]
   tag cci: ['CCI-000169']
   tag nist: ['AU-12 a']
 
@@ -72,16 +72,14 @@ sudo systemctl tomcat daemon-reload'
     access_log_valve_index = valves.index('org.apache.catalina.valves.AccessLogValve')
     access_log_valve = tomcat_server_file["//Valve[#{access_log_valve_index}]/@requestAttributesEnabled"]
 
-    describe.one do
-      describe 'The Remote IP Valve Component for the proxy must be defined' do
-        subject { remote_ip_valve }
-        it { should_not be_empty }
-      end
+    describe 'The Remote IP Valve Component for the proxy must be defined' do
+      subject { remote_ip_valve }
+      it { should_not be_empty }
+    end
 
-      describe 'The Access Log Valve component must have the requestAttributesEnabled field set to true' do
-        subject { access_log_valve }
-        it { should cmp true }
-      end
+    describe 'The Access Log Valve component must have the requestAttributesEnabled field set to true' do
+      subject { access_log_valve }
+      it { should cmp true }
     end
   end
 end
