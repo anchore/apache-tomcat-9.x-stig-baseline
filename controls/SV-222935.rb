@@ -3,18 +3,18 @@ control 'SV-222935' do
   desc 'The unencrypted HTTP protocol does not protect data from interception or alteration which can subject users to eavesdropping, tracking, and the modification of received data. To secure an HTTP connector, both the secure and scheme flags must be set.'
   desc 'check', 'From the Tomcat server console, run the following command:
 
-sudo cat $CATALINA_BASE/conf/server.xml. 
+sudo cat $CATALINA_BASE/conf/server.xml.
 
-Examine each <Connector/> element. 
+Examine each <Connector/> element.
 
 For each connector, verify the secure= flag is set to "true" and the scheme= flag is set to "https" on each connector.
 
 If the secure flag is not set to "true" and/or the scheme flag is not set to "https" for each HTTP connector element, this is a finding.'
   desc 'fix', 'From the Tomcat server as a privileged user, edit the server.xml file.
 
-sudo nano $CATALINA_BASE/conf/server.xml. 
+sudo nano $CATALINA_BASE/conf/server.xml.
 
-Locate each <Connector/> element which is lacking a secure setting.  
+Locate each <Connector/> element which is lacking a secure setting.
 
 EXAMPLE Connector:
 <Connector port="8080" protocol="HTTP/1.1"
@@ -39,7 +39,7 @@ sudo systemctl reload-daemon'
   tag gtitle: 'SRG-APP-000033-AS-000024'
   tag fix_id: 'F-24596r426250_fix'
   tag 'documentable'
-  tag legacy: ['SV-111401', 'V-102453']
+  tag legacy: %w[SV-111401 V-102453]
   tag cci: ['CCI-000213']
   tag nist: ['AC-3']
 
@@ -55,7 +55,7 @@ sudo systemctl reload-daemon'
     connectors_count = tomcat_server_file['//Connector/'].count
     (1..connectors_count).each do |_i|
       describe tomcat_server_file do
-        its(['//Connector/@secure']) { should include true }
+        its(['//Connector/@secure']) { should include 'true' }
         its(['//Connector/@scheme']) { should include 'https' }
       end
     end
