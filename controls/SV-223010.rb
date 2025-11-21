@@ -27,17 +27,15 @@ Restart the auditd service so the changes take effect:
   tag gtitle: 'SRG-APP-000108-AS-000067'
   tag fix_id: 'F-24671r985886_fix'
   tag 'documentable'
-  tag legacy: ['SV-111571', 'V-102621']
-  tag cci: ['CCI-000139', 'CCI-003831']
+  tag legacy: %w[SV-111571 V-102621]
+  tag cci: %w[CCI-000139 CCI-003831]
   tag nist: ['AU-5 a', 'AU-9 b']
 
-  if virtualization.system.eql?('docker')
-    describe 'Virtualization system used is Docker' do
-      skip 'The virtualization system used to validate content is Docker. The auditctl program is not installed in containers, therefore this check will be skipped.'
-    end
-  else
-    describe auditd_conf do
-      its('action_mail_acct') { should cmp 'root' }
-    end
+  only_if('This control is Not Applicable to containers', impact: 0.0) do
+    !virtualization.system.eql?('docker')
+  end
+
+  describe auditd_conf do
+    its('action_mail_acct') { should cmp 'root' }
   end
 end

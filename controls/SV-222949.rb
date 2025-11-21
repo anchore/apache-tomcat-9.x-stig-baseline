@@ -13,7 +13,7 @@ If the umask is not = 0027, this is a finding.'
 Use a file editor like nano or vi and edit the /etc/systemd/system/tomcat.service file.
 
 Change the "UMask=" setting to 0027.
- 
+
 UMask =0027
 
 Save the file and restart Tomcat:
@@ -28,24 +28,22 @@ sudo systemctl daemon-reload'
   tag gtitle: 'SRG-APP-000133-AS-000092'
   tag fix_id: 'F-24610r426292_fix'
   tag 'documentable'
-  tag legacy: ['SV-111423', 'V-102481']
+  tag legacy: %w[SV-111423 V-102481]
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  if virtualization.system.eql?('docker')
-    describe 'Virtualization system used is Docker' do
-      skip 'The virtualization system used to validate content is Docker. The systemd program is not installed in containers, therefore this check will be skipped.'
-    end
-  else
-    describe 'The systemd startup file must exist' do
-      subject { service('tomcat') }
-      it { should be_installed }
-    end
+  only_if('This control is Not Applicable to containers', impact: 0.0) do
+    !virtualization.system.eql?('docker')
+  end
 
-    unless service('tomcat').params.empty?
-      describe service('tomcat').params do
-        its('UMask') { should cmp '0027' }
-      end
+  describe 'The systemd startup file must exist' do
+    subject { service('tomcat') }
+    it { should be_installed }
+  end
+
+  unless service('tomcat').params.empty?
+    describe service('tomcat').params do
+      its('UMask') { should cmp '0027' }
     end
   end
 end

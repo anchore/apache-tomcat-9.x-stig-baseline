@@ -4,11 +4,11 @@ control 'SV-222936' do
 
 Examples include setting JSM policy to allow an application to write to folders on the server or to initiate network connections to other servers via TCP/IP.
 
-Because the JSM isolates application code to prevent an application from adversely accessing resources on the underlying Tomcat server, care must be taken to ensure the JSM policies are configured properly. Allowing untrusted web applications to run on the Tomcat server without a JSM policy that limits access to server resources creates a risk of compromise to the server. 
+Because the JSM isolates application code to prevent an application from adversely accessing resources on the underlying Tomcat server, care must be taken to ensure the JSM policies are configured properly. Allowing untrusted web applications to run on the Tomcat server without a JSM policy that limits access to server resources creates a risk of compromise to the server.
 
-Ideally, the JSM policy is implemented and tested during the application development phase. This is when the application resource requirements are best identified and documented so the correct JSM policy can be implemented in the production environment.  
+Ideally, the JSM policy is implemented and tested during the application development phase. This is when the application resource requirements are best identified and documented so the correct JSM policy can be implemented in the production environment.
 
-Creating the correct JSM policy can be a challenge when installing commercial software that does not provide the policy as part of the installation process or via documentation. This is due to the fact that the critical application access requirements to the system will typically not be known to the system administrator. In these cases, running the JSM can result in failure for some application functionality (e.g., an application might not be able to write logs to a particular folder on the system or communicate with other systems as intended). 
+Creating the correct JSM policy can be a challenge when installing commercial software that does not provide the policy as part of the installation process or via documentation. This is due to the fact that the critical application access requirements to the system will typically not be known to the system administrator. In these cases, running the JSM can result in failure for some application functionality (e.g., an application might not be able to write logs to a particular folder on the system or communicate with other systems as intended).
 
 When faced with application functionality failures, the typical troubleshooting approach for the system administrator to follow is to install the application in a test environment, set the $CATALINA_POLICY setting to debug, and identify failure events in the logs. This can aid in identifying what privileges the application requires. From there the JSM policies can be set, tested, documented, and transferred to production. If these actions do not address all of the issues, the Risk Management Framework processes come into effect and a risk acceptance for this requirement must be obtained from the ISSO.
 
@@ -19,7 +19,7 @@ Run the following command:
 sudo cat /etc/systemd/system/tomcat.service |grep -i security
 
 If there is a documented and approved risk acceptance for not operating the Security Manager, this requirement is Not Applicable.
- 
+
 If the ExecStart parameter does not include the -security flag, this is a finding.'
   desc 'fix', 'Refer to the vulnerability discussion of this requirement for additional information. Install the application in a test environment and determine the application access requirements. Test and document the Java Security Manager policy and then transfer the JSM policy to the $CATALINA_BASE/conf/catalina.properties file. If operating multiple instances of Tomcat, use $CATALINA_BASE in place of $CATALINA_HOME as per standard Tomcat practice.
 
@@ -37,24 +37,22 @@ sudo systemctl daemon-reload'
   tag gtitle: 'SRG-APP-000033-AS-000024'
   tag fix_id: 'F-24597r426253_fix'
   tag 'documentable'
-  tag legacy: ['SV-111403', 'V-102455']
+  tag legacy: %w[SV-111403 V-102455]
   tag cci: ['CCI-000213']
   tag nist: ['AC-3']
 
-  if virtualization.system.eql?('docker')
-    describe 'Virtualization system used is Docker' do
-      skip 'The virtualization system used to validate content is Docker. The systemd program is not installed in containers, therefore this check will be skipped.'
-    end
-  else
-    describe 'The systemd startup file must exist' do
-      subject { service('tomcat') }
-      it { should be_installed }
-    end
+  only_if('This control is Not Applicable to containers', impact: 0.0) do
+    !virtualization.system.eql?('docker')
+  end
 
-    unless service('tomcat').params.empty?
-      describe service('tomcat').params do
-        its('ExecStart') { should match '-security' }
-      end
+  describe 'The systemd startup file must exist' do
+    subject { service('tomcat') }
+    it { should be_installed }
+  end
+
+  unless service('tomcat').params.empty?
+    describe service('tomcat').params do
+      its('ExecStart') { should match '-security' }
     end
   end
 end

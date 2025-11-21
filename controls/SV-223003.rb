@@ -5,14 +5,14 @@ control 'SV-223003' do
 Technically, the tomcat.service referenced in the check and fix could be called a different name, for STIG purposes and to provide a standard setting that can be referred to and obviously is used for Tomcat, tomcat.service was chosen.'
   desc 'check', 'From the Tomcat server as a privileged user, run the following command:
 
-sudo grep -i  recycle_facades /etc/systemd/system/tomcat.service 
+sudo grep -i  recycle_facades /etc/systemd/system/tomcat.service
 
 If there are no results, or if the org.apache.catalina.connector. RECYCLE_FACADES is not ="true", this is a finding.'
-  desc 'fix', "From the Tomcat server as a privileged user: 
+  desc 'fix', "From the Tomcat server as a privileged user:
 
 Edit the /etc/systemd/system/tomcat.service file and either add or edit the org.apache.catalina.connector. RECYCLE_FACADES setting.
 
-Set the org.apache.catalina.connector. RECYCLE_FACADES=true 
+Set the org.apache.catalina.connector. RECYCLE_FACADES=true
 
 EXAMPLE:
 Environment='CATALINA_OPTS -Dorg.apache.catalina.connector. RECYCLE_FACADES=true'
@@ -29,25 +29,22 @@ sudo systemctl daemon-reload"
   tag gtitle: 'SRG-APP-000516-AS-000237'
   tag fix_id: 'F-24664r426454_fix'
   tag 'documentable'
-  tag legacy: ['SV-111529', 'V-102589']
+  tag legacy: %w[SV-111529 V-102589]
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  if virtualization.system.eql?('docker')
-    describe 'Virtualization system used is Docker' do
-      skip 'The virtualization system used to validate content is Docker. The systemd program is not installed in containers, therefore this check will be skipped.'
-    end
-  else
+  only_if('This control is Not Applicable to containers', impact: 0.0) do
+    !virtualization.system.eql?('docker')
+  end
 
-    describe 'The systemd startup file must exist' do
-      subject { service('tomcat') }
-      it { should be_installed }
-    end
+  describe 'The systemd startup file must exist' do
+    subject { service('tomcat') }
+    it { should be_installed }
+  end
 
-    unless service('tomcat').params.empty?
-      describe service('tomcat').params['Environment'] do
-        it { should match '-Dorg.apache.catalina.connector.RECYCLE_FACADES=true' }
-      end
+  unless service('tomcat').params.empty?
+    describe service('tomcat').params['Environment'] do
+      it { should match '-Dorg.apache.catalina.connector.RECYCLE_FACADES=true' }
     end
   end
 end

@@ -31,7 +31,7 @@ Document the password and store in a secured location that is only accessible to
   tag cci: ['CCI-000186', 'CCI-000213']
   tag nist: ['IA-5 (2) (a) (1)', 'AC-3']
 
-  describe 'The default password for keystore is "changeit" sans quotes. If the following command: "keytool -list -v -keystore <keystore location>" grants access. This check has failed.' do
+  describe 'The default password manager must be changed' do
     subject { command('keytool -list -v --storepass \'changeit\'').exit_status }
     it { should_not eq 0 }
   end

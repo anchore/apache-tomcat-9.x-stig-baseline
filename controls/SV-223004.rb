@@ -36,30 +36,28 @@ sudo systemctl daemon-reload)
   tag gtitle: 'SRG-APP-000516-AS-000237'
   tag fix_id: 'F-24665r426457_fix'
   tag 'documentable'
-  tag legacy: ['SV-111531', 'V-102591']
+  tag legacy: %w[SV-111531 V-102591]
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  if virtualization.system.eql?('docker')
-    describe 'Virtualization system used is Docker' do
-      skip 'The virtualization system used to validate content is Docker. The systemd program is not installed in containers, therefore this check will be skipped.'
-    end
-  else
-    catalina_base = input('catalina_base')
-    describe 'The systemd startup file must exist' do
-      subject { service('tomcat') }
-      it { should be_installed }
-    end
+  only_if('This control is Not Applicable to containers', impact: 0.0) do
+    !virtualization.system.eql?('docker')
+  end
 
-    unless service('tomcat').params.empty?
-      describe service('tomcat').params['Environment'] do
-        it { should_not match '-D.org.apache.catalina.connector.ALLOW_BACKSLASH=true' }
-      end
-    end
+  catalina_base = input('catalina_base')
+  describe 'The systemd startup file must exist' do
+    subject { service('tomcat') }
+    it { should be_installed }
+  end
 
-    describe "#{catalina_base}/conf/catalina.properties config" do
-      subject { parse_config_file("#{catalina_base}/conf/catalina.properties").params }
-      its(['org.apache.catalina.connector.ALLOW_BACKSLASH']) { should_not cmp 'true' }
+  unless service('tomcat').params.empty?
+    describe service('tomcat').params['Environment'] do
+      it { should_not match '-D.org.apache.catalina.connector.ALLOW_BACKSLASH=true' }
     end
+  end
+
+  describe "#{catalina_base}/conf/catalina.properties config" do
+    subject { parse_config_file("#{catalina_base}/conf/catalina.properties").params }
+    its(['org.apache.catalina.connector.ALLOW_BACKSLASH']) { should_not cmp 'true' }
   end
 end
