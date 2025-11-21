@@ -1,6 +1,6 @@
 control 'SV-222964' do
   title 'TLS must be enabled on JMX.'
-  desc 'Java Management Extensions (JMX) provides the means for enterprises to remotely manage the Java VM and can be used in place of the local manager application that comes with Tomcat. 
+  desc 'Java Management Extensions (JMX) provides the means for enterprises to remotely manage the Java VM and can be used in place of the local manager application that comes with Tomcat.
 
 JMX management is configured via the Tomcat CATALINA_OPTS setting maintained in the /etc/systemd/system/tomcat.service file for Ubuntu systemd Unix. For Linux OS flavors other than Ubuntu, use the relevant OS commands.
 
@@ -9,13 +9,13 @@ Management tasks such as monitoring and control of applications is accomplished 
 
 As a privileged user from the Tomcat server, run the following command:
 
-grep -i jmxremote /etc/systemd/system/tomcat.service 
+grep -i jmxremote /etc/systemd/system/tomcat.service
 
 Review the output. If there are no results displayed, or jmxremote management extensions are not used, this requirement is Not Applicable.
 
 If the JMXremote setting is configured and jmxremote.ssl="false", this is a finding.
 
-EXAMPLE: 
+EXAMPLE:
 -Dcom.sun.management.jmxremote
 -Dcom.sun.management.jmxremote.authenticate=false
 -Dcom.sun.management.jmxremote.ssl=false'
@@ -34,9 +34,13 @@ sudo systemctl daemon-reload"
   tag gtitle: 'SRG-APP-000153-AS-000104'
   tag fix_id: 'F-24625r426337_fix'
   tag 'documentable'
-  tag legacy: ['V-102511', 'SV-111565']
-  tag cci: ['CCI-004045', 'CCI-000770']
+  tag legacy: %w[V-102511 SV-111565]
+  tag cci: %w[CCI-004045 CCI-000770]
   tag nist: ['IA-2 (5)', 'IA-2 (5)']
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) do
+    !virtualization.system.eql?('docker')
+  end
 
   describe 'The systemd startup file must exist' do
     subject { service('tomcat') }
