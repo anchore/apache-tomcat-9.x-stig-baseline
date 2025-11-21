@@ -24,11 +24,11 @@ Either remove the files contained in $CATALINA_BASE/webapps/ROOT folder or repla
   tag gtitle: 'SRG-APP-000141-AS-000095'
   tag fix_id: 'F-24620r426322_fix'
   tag 'documentable'
-  tag legacy: ['SV-111443', 'V-102501']
+  tag legacy: %w[SV-111443 V-102501]
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe 'Review the contents inside ROOT directory' do
-    skip 'The ROOT directory contains default info check the index.jsp and RELEASE-NOTES.txt file for appropriate information that will be shown to users.'
+    skip 'Ensure that the default application is removed or replaced with something that will not reveal version information etc that is sensitive.'
   end
 end

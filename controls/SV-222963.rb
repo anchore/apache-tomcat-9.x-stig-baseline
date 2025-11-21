@@ -26,9 +26,13 @@ sudo systemctl daemon-reload"
   tag gtitle: 'SRG-APP-000149-AS-000102'
   tag fix_id: 'F-24624r426334_fix'
   tag 'documentable'
-  tag legacy: ['SV-111451', 'V-102509']
+  tag legacy: %w[SV-111451 V-102509]
   tag cci: ['CCI-000765']
   tag nist: ['IA-2 (1)']
+
+  only_if('This control is Not Applicable to containers', impact: 0.0) do
+    !virtualization.system.eql?('docker')
+  end
 
   describe 'The systemd startup file must exist' do
     subject { service('tomcat') }
