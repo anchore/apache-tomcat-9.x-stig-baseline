@@ -43,7 +43,7 @@ Create or uncomment the httpHeaderSecurity filter mapping:
   tag check_id: 'C-48815r754862_chk'
   tag severity: 'low'
   tag gid: 'V-222928'
-  tag rid: 'SV-222928r960762_rule'
+  tag rid: 'SV-222928r1264520_rule'
   tag stig_id: 'TCAT-AS-000030'
   tag gtitle: 'SRG-APP-000015-AS-000010'
   tag fix_id: 'F-37850r918124_fix'

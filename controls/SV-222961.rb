@@ -24,7 +24,7 @@ If privileged mode is required for a particular application, verify trust of app
   tag check_id: 'C-24633r426327_chk'
   tag severity: 'medium'
   tag gid: 'V-222961'
-  tag rid: 'SV-222961r1043177_rule'
+  tag rid: 'SV-222961r1264551_rule'
   tag stig_id: 'TCAT-AS-000590'
   tag gtitle: 'SRG-APP-000142-AS-000014'
   tag fix_id: 'F-24622r426328_fix'

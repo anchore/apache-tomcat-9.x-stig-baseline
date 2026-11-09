@@ -38,7 +38,7 @@ This is for illustration purposes only. The user must modify the LDAP settings o
   tag check_id: 'C-24637r426339_chk'
   tag severity: 'high'
   tag gid: 'V-222965'
-  tag rid: 'SV-222965r961029_rule'
+  tag rid: 'SV-222965r1264556_rule'
   tag stig_id: 'TCAT-AS-000690'
   tag gtitle: 'SRG-APP-000172-AS-000121'
   tag fix_id: 'F-24626r426340_fix'

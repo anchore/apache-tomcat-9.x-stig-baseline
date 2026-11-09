@@ -19,7 +19,7 @@ Either remove the files contained in $CATALINA_BASE/webapps/ROOT folder or repla
   tag check_id: 'C-24631r426321_chk'
   tag severity: 'low'
   tag gid: 'V-222959'
-  tag rid: 'SV-222959r960963_rule'
+  tag rid: 'SV-222959r1264549_rule'
   tag stig_id: 'TCAT-AS-000570'
   tag gtitle: 'SRG-APP-000141-AS-000095'
   tag fix_id: 'F-24620r426322_fix'

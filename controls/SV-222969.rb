@@ -35,7 +35,7 @@ Verify jmxmanagement access is restricted to the management network IP address r
   tag check_id: 'C-24641r426351_chk'
   tag severity: 'medium'
   tag gid: 'V-222969'
-  tag rid: 'SV-222969r961095_rule'
+  tag rid: 'SV-222969r1264560_rule'
   tag stig_id: 'TCAT-AS-000780'
   tag gtitle: 'SRG-APP-000211-AS-000146'
   tag fix_id: 'F-24630r426352_fix'

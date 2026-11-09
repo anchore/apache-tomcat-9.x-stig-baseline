@@ -7,26 +7,26 @@ Not all Tomcat systems will have an RMF system categorization that warrants mutu
 
 If there is a documented risk acceptance for not mutually authenticating proxy or load balancer connections due to operational issues, or RMF system categorization this is not a finding.
 
-Using the aforementioned documentation, identify each Tomcat IP address that is served by a load balancer or proxy.  
+Using the aforementioned documentation, identify each Tomcat IP address that is served by a load balancer or proxy.
 
-From the Tomcat server as a privileged user, review the $CATALINA_BASE/conf/server.xml file.  Review each <Connector> element for the address setting and the clientAuth setting.
+From the Tomcat server as a privileged user, review the $CATALINA_BASE/conf/server.xml file. Review each <SSLHostConfig> element for the address setting and the certificationVerification.
 
 sudo grep -i -B1 -A5 connector $CATALINA_BASE/conf/server.xml
 
 If a connector has a configured IP address that is proxied or load balanced and the clientAuth setting is not "true", this is a finding.'
-  desc 'fix', 'From the Tomcat server as a privileged user, edit the $CATALINA_BASE/conf/server.xml file.  
+  desc 'fix', 'From the Tomcat server as a privileged user, edit the $CATALINA_BASE/conf/server.xml file.
 
-Modify each <Connector> element where the IP address is behind a proxy or load balancer.
+Modify each <SSLHostConfig> element where the IP address is behind a proxy or load balancer.
 
-Set clientAuth="true" then identify the applications that are associated with the connector and edit the associated web.xml files.  Assure the <auth-method> is set to CLIENT-CERT.'
+Set certificationVerification="true", identify the applications that are associated with the connector, and edit the associated web.xml files. Ensure the <auth-method> is set to CLIENT-CERT.'
   impact 0.5
-  tag check_id: 'C-24643r426357_chk'
+  tag check_id: 'C-24643r1264562_chk'
   tag severity: 'medium'
   tag gid: 'V-222971'
-  tag rid: 'SV-222971r1043178_rule'
+  tag rid: 'SV-222971r1264563_rule'
   tag stig_id: 'TCAT-AS-000800'
   tag gtitle: 'SRG-APP-000219-AS-000147'
-  tag fix_id: 'F-24632r426358_fix'
+  tag fix_id: 'F-24632r1135499_fix'
   tag 'documentable'
   tag legacy: ['SV-111465', 'V-102525']
   tag cci: ['CCI-001184']

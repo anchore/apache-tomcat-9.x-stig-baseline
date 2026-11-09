@@ -7,27 +7,27 @@ Technically, the tomcat.service referenced in the check and fix could be called 
 
 sudo grep -i  recycle_facades /etc/systemd/system/tomcat.service
 
-If there are no results, or if the org.apache.catalina.connector. RECYCLE_FACADES is not ="true", this is a finding.'
-  desc 'fix', "From the Tomcat server as a privileged user:
+If there are no results, or if the org.apache.catalina.connector.RECYCLE_FACADES is not ="true", this is a finding.'
+  desc 'fix', %q(From the Tomcat server as a privileged user:
 
-edit the /etc/systemd/system/tomcat.service file and either add or edit the org.apache.catalina.connector. RECYCLE_FACADES setting.
+Edit the /etc/systemd/system/tomcat.service file and either add or edit the org.apache.catalina.connector.RECYCLE_FACADES setting.
 
-Set the org.apache.catalina.connector. RECYCLE_FACADES=true. 
+Set the org.apache.catalina.connector.RECYCLE_FACADES=true. 
 
 EXAMPLE:
-Environment='CATALINA_OPTS -Dorg.apache.catalina.connector. RECYCLE_FACADES=true'
+Environment='CATALINA_OPTS -Dorg.apache.catalina.connector.RECYCLE_FACADES=true'
 
 Restart the Tomcat server:
 sudo systemctl restart tomcat
-sudo systemctl daemon-reload"
+sudo systemctl daemon-reload)
   impact 0.3
-  tag check_id: 'C-24645r426363_chk'
+  tag check_id: 'C-24645r1260224_chk'
   tag severity: 'low'
   tag gid: 'V-222973'
-  tag rid: 'SV-222973r1043180_rule'
+  tag rid: 'SV-222973r1265038_rule'
   tag stig_id: 'TCAT-AS-000820'
   tag gtitle: 'SRG-APP-000223-AS-000150'
-  tag fix_id: 'F-24634r426364_fix'
+  tag fix_id: 'F-24634r1265037_fix'
   tag 'documentable'
   tag legacy: ['SV-111469', 'V-102529']
   tag cci: ['CCI-001664']

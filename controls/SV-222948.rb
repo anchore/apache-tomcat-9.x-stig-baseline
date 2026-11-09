@@ -17,7 +17,7 @@ sudo find $CATALINA_HOME/bin -follow -maxdepth 0 -type d -print0 | sudo xargs ch
   tag check_id: 'C-24620r426288_chk'
   tag severity: 'medium'
   tag gid: 'V-222948'
-  tag rid: 'SV-222948r960939_rule'
+  tag rid: 'SV-222948r1264538_rule'
   tag stig_id: 'TCAT-AS-000390'
   tag gtitle: 'SRG-APP-000121-AS-000081'
   tag fix_id: 'F-24609r426289_fix'

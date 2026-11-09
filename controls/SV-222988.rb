@@ -21,7 +21,7 @@ sudo find $CATALINA_BASE/logs -maxdepth 0 \\( ! -group tomcat \\) | sudo xargs c
   tag check_id: 'C-24660r426408_chk'
   tag severity: 'medium'
   tag gid: 'V-222988'
-  tag rid: 'SV-222988r961461_rule'
+  tag rid: 'SV-222988r1264578_rule'
   tag stig_id: 'TCAT-AS-001250'
   tag gtitle: 'SRG-APP-000380-AS-000088'
   tag fix_id: 'F-24649r426409_fix'

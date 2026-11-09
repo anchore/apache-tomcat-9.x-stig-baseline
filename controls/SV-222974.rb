@@ -1,8 +1,10 @@
 control 'SV-222974' do
   title 'Clusters must operate on a trusted network.'
-  desc '<Cluster> [object Object]<#text> Operating a Tomcat cluster on an untrusted network creates potential for unauthorized persons to view or manipulate cluster session traffic. When operating a Tomcat cluster, care must be taken to isolate the cluster traffic from untrusted sources. Options include using a private VLAN, VPN, or IPSEC tunnel or by encrypting cluster traffic by using the EncryptInterceptor. The EncryptInterceptor adds encryption to the channel messages carrying session data between Tomcat cluster nodes.
+  desc %q(Operating a Tomcat cluster on an untrusted network creates potential for unauthorized persons to view or manipulate cluster session traffic. When operating a Tomcat cluster, care must be taken to isolate the cluster traffic from untrusted sources. Options include using a private VLAN, VPN, or IPSEC tunnel or by encrypting cluster traffic by using the EncryptInterceptor. The EncryptInterceptor adds encryption to the channel messages carrying session data between Tomcat cluster nodes.
 
-Place the'
+Place the <Cluster> element inside either the <Engine> container or the <Host> container.
+
+Placing it in the engine means supporting clustering in all virtual hosts of Tomcat and sharing the messaging component. When the user places the <Cluster> inside the <Engine> element, the cluster will append the host name of each session manager to the manager's name so that two contexts with the same name (but sitting inside two different hosts) will be distinguishable.)
   desc 'check', 'Review System Security Plan (SSP) documentation determine if the Tomcat server is part of an application server cluster. Also identify Tomcat network interfaces and the proxy/load balancer that front-ends the cluster.
 
 From the Tomcat server as a privileged user, run the following command:
@@ -47,7 +49,7 @@ The EncryptInterceptor adds encryption to the channel messages carrying session 
   tag check_id: 'C-24646r426366_chk'
   tag severity: 'medium'
   tag gid: 'V-222974'
-  tag rid: 'SV-222974r961122_rule'
+  tag rid: 'SV-222974r1264565_rule'
   tag stig_id: 'TCAT-AS-000860'
   tag gtitle: 'SRG-APP-000225-AS-000154'
   tag fix_id: 'F-24635r426367_fix'

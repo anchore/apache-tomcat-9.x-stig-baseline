@@ -1,9 +1,9 @@
 control 'SV-222952' do
   title 'Unapproved connectors must be disabled.'
   desc 'Connectors are how Tomcat receives requests, passes them to hosted web applications, and then sends back the results to the requestor. Tomcat provides HTTP and Apache JServ Protocol (AJP) connectors and makes these protocols available via configured network ports. Unapproved connectors provide open network connections to either of these protocols and put the system at risk.'
-  desc 'check', 'Review SSP for list of approved connectors and associated TCP/IP ports. Ensure only approved connectors are present. Execute the following command on the Tomcat server to find configured Connectors:
+  desc 'check', 'Review SSP for list of approved connectors and associated TCP/IP ports. Verify only approved connectors are present. Execute the following command on the Tomcat server to find configured Connectors:
 
-$ grep “Connector” $CATALINA_BASE/conf/server.xml
+sudo cat $CATALINA_BASE/conf/server.xml | grep -i "Connector"
 
 Review results and verify all connectors and their associated network ports are approved in the SSP.
 
@@ -14,10 +14,10 @@ Alternatively, edit the $CATALINA_BASE/conf/server.xml file, remove any unapprov
 sudo systemctl restart tomcat
 sudo systemctl daemon-reload'
   impact 0.5
-  tag check_id: 'C-24624r426300_chk'
+  tag check_id: 'C-24624r1135496_chk'
   tag severity: 'medium'
   tag gid: 'V-222952'
-  tag rid: 'SV-222952r960963_rule'
+  tag rid: 'SV-222952r1264542_rule'
   tag stig_id: 'TCAT-AS-000500'
   tag gtitle: 'SRG-APP-000141-AS-000095'
   tag fix_id: 'F-24613r426301_fix'

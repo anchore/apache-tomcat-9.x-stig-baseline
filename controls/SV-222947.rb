@@ -15,7 +15,7 @@ sudo find $CATALINA_HOME/bin/*jar -follow -maxdepth 0 -type f -print0 | sudo xar
   tag check_id: 'C-24619r426285_chk'
   tag severity: 'medium'
   tag gid: 'V-222947'
-  tag rid: 'SV-222947r960936_rule'
+  tag rid: 'SV-222947r1264537_rule'
   tag stig_id: 'TCAT-AS-000380'
   tag gtitle: 'SRG-APP-000120-AS-000080'
   tag fix_id: 'F-24608r426286_fix'

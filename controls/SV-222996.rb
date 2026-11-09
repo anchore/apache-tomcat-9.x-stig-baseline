@@ -21,7 +21,7 @@ Update the Tomcat production instance accordingly and ensure corrected builds ar
   tag check_id: 'C-24668r1067547_chk'
   tag severity: 'medium'
   tag gid: 'V-222996'
-  tag rid: 'SV-222996r1067548_rule'
+  tag rid: 'SV-222996r1264585_rule'
   tag stig_id: 'TCAT-AS-001470'
   tag gtitle: 'SRG-APP-000435-AS-000163'
   tag fix_id: 'F-24657r426433_fix'

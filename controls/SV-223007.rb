@@ -17,7 +17,7 @@ Retain the information in the SSP and present to the auditor in the event of a C
   tag check_id: 'C-24679r426465_chk'
   tag severity: 'low'
   tag gid: 'V-223007'
-  tag rid: 'SV-223007r961863_rule'
+  tag rid: 'SV-223007r1264602_rule'
   tag stig_id: 'TCAT-AS-001710'
   tag gtitle: 'SRG-APP-000516-AS-000237'
   tag fix_id: 'F-24668r426466_fix'

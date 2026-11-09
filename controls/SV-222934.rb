@@ -17,7 +17,7 @@ Ensure the "readonly" param-value for the "DefaultServlet" servlet class = "true
   tag check_id: 'C-24606r622485_chk'
   tag severity: 'medium'
   tag gid: 'V-222934'
-  tag rid: 'SV-222934r960792_rule'
+  tag rid: 'SV-222934r1264525_rule'
   tag stig_id: 'TCAT-AS-000090'
   tag gtitle: 'SRG-APP-000033-AS-000024'
   tag fix_id: 'F-24595r622486_fix'

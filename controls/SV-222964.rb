@@ -26,10 +26,10 @@ Environment='CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.management.j
 sudo systemctl start tomcat
 sudo systemctl daemon-reload"
   impact 0.7
-  tag check_id: 'C-24636r1016510_chk'
+  tag check_id: 'C-24636r1264554_chk'
   tag severity: 'high'
   tag gid: 'V-222964'
-  tag rid: 'SV-222964r1016511_rule'
+  tag rid: 'SV-222964r1264555_rule'
   tag stig_id: 'TCAT-AS-000630'
   tag gtitle: 'SRG-APP-000153-AS-000104'
   tag fix_id: 'F-24625r426337_fix'

@@ -21,7 +21,7 @@ Document the password and store in a secured location that is only accessible to
   tag check_id: 'C-24603r426237_chk'
   tag severity: 'high'
   tag gid: 'V-222931'
-  tag rid: 'SV-222931r960792_rule'
+  tag rid: 'SV-222931r1264522_rule'
   tag stig_id: 'TCAT-AS-000060'
   tag gtitle: 'SRG-APP-000033-AS-000024'
   tag fix_id: 'F-24592r426238_fix'
