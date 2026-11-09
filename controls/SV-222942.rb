@@ -1,6 +1,6 @@
 control 'SV-222942' do
   title 'The first line of request must be logged.'
-  desc 'The access logfile format is defined within a Valve that implements the org.apache.catalina.valves.AccessLogValve interface within the /opt/tomcat/server.xml configuration file: The "%r" pattern code is included in the pattern element and logs the first line associated with the event, namely the request method, URL path, query string, and protocol (""" simply specifies a literal double quote). Including the pattern in the log configuration provides useful information about the time of the event which is critical for troubleshooting and forensic investigations.'
+  desc 'The access logfile format is defined within a Valve that implements the org.apache.catalina.valves.AccessLogValve interface within the /opt/tomcat/server.xml configuration file: The &quot;%r&quot; pattern code is included in the pattern element and logs the first line associated with the event, namely the request method, URL path, query string, and protocol ("&quot;" simply specifies a literal double quote). Including the pattern in the log configuration provides useful information about the time of the event which is critical for troubleshooting and forensic investigations.'
   desc 'check', 'As an elevated user on the Tomcat server:
 
 Edit the $CATALINA_BASE/conf/server.xml file.
