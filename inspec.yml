@@ -15,6 +15,13 @@ inputs:
   # value: '/usr/local/tomcat'
   value: '/usr/local/tomcat'
 
+- name: catalina_home
+  description: The location of the Tomcat installation (binaries in bin/ and libraries in lib/)
+  type: string
+  # example:
+  # value: '/opt/tomcat'
+  value: '/usr/local/tomcat'
+
 - name: max_active_sessions
   description: The number of authorized admins requiring simultaneous access to the server.
   type: numeric
