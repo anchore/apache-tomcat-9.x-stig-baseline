@@ -53,13 +53,32 @@ Set certificationVerification="true", identify the applications that are associa
       if !conn.empty?
         if conn[0] != '127.0.0.1' && conn[0] != '::1'
           # V3R5 moved the setting from Connector clientAuth to SSLHostConfig (DISA writes
-          # "certificationVerification"; Tomcat's attribute is certificateVerification). Tomcat 9
-          # accepts both, so either one requiring client certificates satisfies the check.
-          settings = tomcat_server_file["//Connector[#{i}]/@clientAuth"] +
-                     tomcat_server_file["//Connector[#{i}]/SSLHostConfig/@certificateVerification"]
-          describe "Connector #{conn[0]} clientAuth / SSLHostConfig certificateVerification" do
-            subject { settings.join(', ') }
-            it { should match(/\b(true|yes|required?)\b/i) }
+          # "certificationVerification"; Tomcat's attribute is certificateVerification). Every host
+          # the connector serves must require client certificates: each SSLHostConfig is checked on
+          # its own. The legacy Connector clientAuth applies only to the default host (or to the
+          # connector itself when it has no SSLHostConfig); an unset attribute means Tomcat's 'none'.
+          required = /\A(true|yes|require|required)\z/i
+          conn_path = "//Connector[#{i}]"
+          client_auth = tomcat_server_file["#{conn_path}/@clientAuth"].first
+          host_count = tomcat_server_file["#{conn_path}/SSLHostConfig"].count
+
+          if host_count.zero?
+            describe "Connector #{conn[0]} clientAuth" do
+              subject { client_auth.to_s }
+              it { should match required }
+            end
+          else
+            default_host = tomcat_server_file["#{conn_path}/@defaultSSLHostConfigName"].first || '_default_'
+            (1..host_count).each do |j|
+              host_path = "#{conn_path}/SSLHostConfig[#{j}]"
+              host_name = tomcat_server_file["#{host_path}/@hostName"].first || '_default_'
+              verification = tomcat_server_file["#{host_path}/@certificateVerification"].first
+              verification ||= client_auth if host_name == default_host
+              describe "Connector #{conn[0]} SSLHostConfig #{host_name} certificateVerification" do
+                subject { verification.to_s }
+                it { should match required }
+              end
+            end
           end
         end
       else
