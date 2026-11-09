@@ -43,8 +43,8 @@ where /opt/tomcat in the example will be referred to as <homefolderpath>
     !virtualization.system.eql?('docker')
   end
 
-  catalina_base = input('catalina_base')
-  desired_result = "-w #{catalina_base}/bin -p wa -k tomcat"
+  catalina_home = input('catalina_home')
+  desired_result = "-w #{catalina_home}/bin -p wa -k tomcat"
 
   describe auditd do
     its('lines') { should include desired_result }

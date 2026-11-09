@@ -52,12 +52,13 @@ sudo systemctl daemon-reload)
 
   unless service('tomcat').params.empty?
     describe service('tomcat').params['Environment'] do
-      it { should_not match '-D.org.apache.catalina.connector.ALLOW_BACKSLASH=true' }
+      # DISA's fix text writes the flag as '-D.org...'; match it with or without the dot
+      it { should_not match(/-D\.?org\.apache\.catalina\.connector\.CoyoteAdapter\.ALLOW_BACKSLASH=true/) }
     end
   end
 
   describe "#{catalina_base}/conf/catalina.properties config" do
     subject { parse_config_file("#{catalina_base}/conf/catalina.properties").params }
-    its(['org.apache.catalina.connector.ALLOW_BACKSLASH']) { should_not cmp 'true' }
+    its(['org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH']) { should_not cmp 'true' }
   end
 end

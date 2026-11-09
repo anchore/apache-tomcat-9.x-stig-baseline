@@ -51,10 +51,15 @@ Set certificationVerification="true", identify the applications that are associa
     (1..connector_count).each do |i|
       conn = tomcat_server_file["//Connector[#{i}]/@address"]
       if !conn.empty?
-        if conn[0] != '127.0.0.1' || conn[0] != '::1'
-          describe 'The clientAuth element must be set to true' do
-            subject { tomcat_server_file["//Connector[#{i}]/@clientAuth"] }
-            it { should cmp 'true' }
+        if conn[0] != '127.0.0.1' && conn[0] != '::1'
+          # V3R5 moved the setting from Connector clientAuth to SSLHostConfig (DISA writes
+          # "certificationVerification"; Tomcat's attribute is certificateVerification). Tomcat 9
+          # accepts both, so either one requiring client certificates satisfies the check.
+          settings = tomcat_server_file["//Connector[#{i}]/@clientAuth"] +
+                     tomcat_server_file["//Connector[#{i}]/SSLHostConfig/@certificateVerification"]
+          describe "Connector #{conn[0]} clientAuth / SSLHostConfig certificateVerification" do
+            subject { settings.join(', ') }
+            it { should match(/\b(true|yes|required?)\b/i) }
           end
         end
       else
