@@ -1,6 +1,6 @@
 ## Apache Tomcat STIG Automated Compliance Validation Profile
 
-InSpec profile to validate the secure configuration of a Apache Tomcat against DISA's Apache Tomcat 9.X Secure Technical Implemenation Guide (STIG) Version 2 Release 1
+InSpec profile to validate the secure configuration of a Apache Tomcat against DISA's Apache Tomcat 9.X Secure Technical Implemenation Guide (STIG) Version 3 Release 5
 
 ## Apache Tomcat STIG Overview
 
