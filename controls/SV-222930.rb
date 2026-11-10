@@ -42,9 +42,10 @@ sudo systemctl daemon-reload'
   tag check_id: 'C-24602r426234_chk'
   tag severity: 'medium'
   tag gid: 'V-222930'
-  tag rid: 'SV-222930r960765_rule'
+  tag rid: 'SV-222930r1264521_rule'
   tag stig_id: 'TCAT-AS-000050'
   tag gtitle: 'SRG-APP-000016-AS-000013'
+  tag satisfies: ['SRG-APP-000016-AS-000013', 'SRG-APP-000080-AS-000045', 'SRG-APP-000089-AS-000050', 'SRG-APP-000091-AS-000052', 'SRG-APP-000095-AS-000056', 'SRG-APP-000098-AS-000061', 'SRG-APP-000099-AS-000062']
   tag fix_id: 'F-24591r426235_fix'
   tag legacy: ['SV-111379', 'V-102435']
   tag cci: ['CCI-000067', 'CCI-000130', 'CCI-000133', 'CCI-000134', 'CCI-000166', 'CCI-000169', 'CCI-000172']

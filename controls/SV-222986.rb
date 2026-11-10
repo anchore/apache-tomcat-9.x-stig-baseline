@@ -17,7 +17,7 @@ sudo find $CATALINA_HOME -maxdepth 0 \\( ! -group tomcat \\) | sudo xargs chgrp 
   tag check_id: 'C-24658r426402_chk'
   tag severity: 'medium'
   tag gid: 'V-222986'
-  tag rid: 'SV-222986r961461_rule'
+  tag rid: 'SV-222986r1264576_rule'
   tag stig_id: 'TCAT-AS-001200'
   tag gtitle: 'SRG-APP-000380-AS-000088'
   tag fix_id: 'F-24647r426403_fix'
@@ -26,8 +26,8 @@ sudo find $CATALINA_HOME -maxdepth 0 \\( ! -group tomcat \\) | sudo xargs chgrp 
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1) (a)']
 
-  catalina_base = input('catalina_base')
-  tomcat_dir = file(catalina_base)
+  catalina_home = input('catalina_home')
+  tomcat_dir = file(catalina_home)
   describe tomcat_dir do
     its('owner') { should cmp 'root' }
     its('group') { should cmp 'tomcat' }

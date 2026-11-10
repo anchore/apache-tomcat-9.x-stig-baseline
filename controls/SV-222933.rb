@@ -35,7 +35,7 @@ EXAMPLE:
   tag check_id: 'C-24605r426243_chk'
   tag severity: 'medium'
   tag gid: 'V-222933'
-  tag rid: 'SV-222933r960792_rule'
+  tag rid: 'SV-222933r1264524_rule'
   tag stig_id: 'TCAT-AS-000080'
   tag gtitle: 'SRG-APP-000033-AS-000024'
   tag fix_id: 'F-24594r426244_fix'

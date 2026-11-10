@@ -7,26 +7,26 @@ Not all Tomcat systems will have an RMF system categorization that warrants mutu
 
 If there is a documented risk acceptance for not mutually authenticating proxy or load balancer connections due to operational issues, or RMF system categorization this is not a finding.
 
-Using the aforementioned documentation, identify each Tomcat IP address that is served by a load balancer or proxy.  
+Using the aforementioned documentation, identify each Tomcat IP address that is served by a load balancer or proxy.
 
-From the Tomcat server as a privileged user, review the $CATALINA_BASE/conf/server.xml file.  Review each <Connector> element for the address setting and the clientAuth setting.
+From the Tomcat server as a privileged user, review the $CATALINA_BASE/conf/server.xml file. Review each <SSLHostConfig> element for the address setting and the certificationVerification.
 
 sudo grep -i -B1 -A5 connector $CATALINA_BASE/conf/server.xml
 
 If a connector has a configured IP address that is proxied or load balanced and the clientAuth setting is not "true", this is a finding.'
-  desc 'fix', 'From the Tomcat server as a privileged user, edit the $CATALINA_BASE/conf/server.xml file.  
+  desc 'fix', 'From the Tomcat server as a privileged user, edit the $CATALINA_BASE/conf/server.xml file.
 
-Modify each <Connector> element where the IP address is behind a proxy or load balancer.
+Modify each <SSLHostConfig> element where the IP address is behind a proxy or load balancer.
 
-Set clientAuth="true" then identify the applications that are associated with the connector and edit the associated web.xml files.  Assure the <auth-method> is set to CLIENT-CERT.'
+Set certificationVerification="true", identify the applications that are associated with the connector, and edit the associated web.xml files. Ensure the <auth-method> is set to CLIENT-CERT.'
   impact 0.5
-  tag check_id: 'C-24643r426357_chk'
+  tag check_id: 'C-24643r1264562_chk'
   tag severity: 'medium'
   tag gid: 'V-222971'
-  tag rid: 'SV-222971r1043178_rule'
+  tag rid: 'SV-222971r1264563_rule'
   tag stig_id: 'TCAT-AS-000800'
   tag gtitle: 'SRG-APP-000219-AS-000147'
-  tag fix_id: 'F-24632r426358_fix'
+  tag fix_id: 'F-24632r1135499_fix'
   tag 'documentable'
   tag legacy: ['SV-111465', 'V-102525']
   tag cci: ['CCI-001184']
@@ -46,22 +46,53 @@ Set clientAuth="true" then identify the applications that are associated with th
   else
     catalina_base = input('catalina_base')
     tomcat_server_file = xml("#{catalina_base}/conf/server.xml")
-    connector_count = tomcat_server_file['//Connector/'].count
+    # V3R5 moved the setting from Connector clientAuth to SSLHostConfig (DISA writes
+    # "certificationVerification"; Tomcat's attribute is certificateVerification). Every host a
+    # non-loopback connector serves must require client certificates, each checked on its own; an
+    # unset attribute means Tomcat's 'none'. The Connector's clientAuth / SSLVerifyClient configure
+    # the default host (defaultSSLHostConfigName), which Tomcat creates from them when no nested
+    # SSLHostConfig has that name. A Connector without an address listens on all addresses.
+    required = /\A(true|yes|require|required)\z/i
+    loopback = ['127.0.0.1', '::1']
+    checked = 0
+    connector_count = tomcat_server_file['//Connector'].count
 
     (1..connector_count).each do |i|
-      conn = tomcat_server_file["//Connector[#{i}]/@address"]
-      if !conn.empty?
-        if conn[0] != '127.0.0.1' || conn[0] != '::1'
-          describe 'The clientAuth element must be set to true' do
-            subject { tomcat_server_file["//Connector[#{i}]/@clientAuth"] }
-            it { should cmp 'true' }
-          end
+      conn_path = "/descendant::Connector[#{i}]" # document order; //Connector[i] indexes within each Service
+      address = tomcat_server_file["#{conn_path}/@address"].first
+      next if loopback.include?(address)
+
+      checked += 1
+      label = "Connector #{address || '(all addresses)'}:#{tomcat_server_file["#{conn_path}/@port"].first}"
+      legacy = tomcat_server_file["#{conn_path}/@clientAuth"] + tomcat_server_file["#{conn_path}/@SSLVerifyClient"]
+      legacy = legacy.find { |v| v !~ required } || legacy.first # any non-requiring alias wins
+      default_host = tomcat_server_file["#{conn_path}/@defaultSSLHostConfigName"].first || '_default_'
+      host_names = []
+
+      (1..tomcat_server_file["#{conn_path}/SSLHostConfig"].count).each do |j|
+        host_path = "#{conn_path}/SSLHostConfig[#{j}]"
+        host_name = tomcat_server_file["#{host_path}/@hostName"].first || '_default_'
+        host_names << host_name
+        verification = tomcat_server_file["#{host_path}/@certificateVerification"].first
+        verification ||= legacy if host_name == default_host
+        describe "#{label} SSLHostConfig #{host_name} certificateVerification" do
+          subject { verification.to_s }
+          it { should match required }
         end
-      else
-        describe 'Unable to find address field on Connector element' do
-          subject { conn }
-          it { should_not be_empty }
-        end
+      end
+
+      next if host_names.include?(default_host)
+
+      describe "#{label} default host #{default_host} (Connector clientAuth / SSLVerifyClient)" do
+        subject { legacy.to_s }
+        it { should match required }
+      end
+    end
+
+    if checked.zero?
+      describe 'Connectors listening on a non-loopback address' do
+        subject { checked }
+        it { should eq 0 }
       end
     end
   end

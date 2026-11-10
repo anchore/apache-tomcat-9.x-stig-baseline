@@ -23,7 +23,7 @@ sudo find $CATALINA_BASE/temp -maxdepth 0 \\( ! -group tomcat \\) | sudo xargs c
   tag check_id: 'C-24661r426411_chk'
   tag severity: 'low'
   tag gid: 'V-222989'
-  tag rid: 'SV-222989r961461_rule'
+  tag rid: 'SV-222989r1264579_rule'
   tag stig_id: 'TCAT-AS-001260'
   tag gtitle: 'SRG-APP-000380-AS-000088'
   tag fix_id: 'F-24650r426412_fix'

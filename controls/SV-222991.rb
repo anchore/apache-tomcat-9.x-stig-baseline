@@ -23,7 +23,7 @@ sudo find $CATALINA_BASE/work -maxdepth 0 \\( ! -group tomcat \\) | sudo xargs c
   tag check_id: 'C-24663r426417_chk'
   tag severity: 'medium'
   tag gid: 'V-222991'
-  tag rid: 'SV-222991r961461_rule'
+  tag rid: 'SV-222991r1264581_rule'
   tag stig_id: 'TCAT-AS-001280'
   tag gtitle: 'SRG-APP-000380-AS-000088'
   tag fix_id: 'F-24652r426418_fix'

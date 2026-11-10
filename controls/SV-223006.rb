@@ -13,7 +13,7 @@ Ensure that all users and roles with access to Tomcat management features and ca
   tag check_id: 'C-24678r426462_chk'
   tag severity: 'medium'
   tag gid: 'V-223006'
-  tag rid: 'SV-223006r961863_rule'
+  tag rid: 'SV-223006r1264598_rule'
   tag stig_id: 'TCAT-AS-001700'
   tag gtitle: 'SRG-APP-000516-AS-000237'
   tag fix_id: 'F-24667r426463_fix'

@@ -22,7 +22,7 @@ Restart the auditd service so the changes take effect:
   tag check_id: 'C-24682r985885_chk'
   tag severity: 'medium'
   tag gid: 'V-223010'
-  tag rid: 'SV-223010r985887_rule'
+  tag rid: 'SV-223010r1264606_rule'
   tag stig_id: 'TCAT-AS-001731'
   tag gtitle: 'SRG-APP-000108-AS-000067'
   tag fix_id: 'F-24671r985886_fix'

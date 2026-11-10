@@ -1,5 +1,5 @@
 control 'SV-222966' do
-  title 'DOD root CA certificates must be installed in Tomcat trust store.'
+  title 'DoW root CA certificates must be installed in Tomcat trust store.'
   desc 'Tomcat truststores are used to validate client certificates. On the Ubuntu OS, by default, Tomcat uses the "cacerts" file as the CA trust store. The file is located in the /etc/ssl/certs/java/ folder with a link to the file in $JAVA_HOME/lib/security/cacerts. However, this location can be modified by setting the value of the javax.net.ssl.trustStore system property. Setting this property within an OS environment variable will change the location to point to a different trust store. 
 
 The Java OS environment variables in the systemd Tomcat startup file must be checked in order to identify the location of the trust store on the file system. (The STIG uses the name tomcat.service as a reference, but technically this file can be called anything).
@@ -22,18 +22,18 @@ keytool -list -cacerts -v | grep -i issuer
 -Alternate location:
 keytool -list -keystore <location of trust store file> -v |grep -i issuer
 
-If there are no CA certificates issued by a CA that are part of the DOD PKI/PKE, this is a finding.'
-  desc 'fix', 'Obtain and install the DOD PKI CA certificate bundles by accessing the DOD PKI office website at cyber.mil/pki-pke.
+If there are no CA certificates issued by a CA that are part of the DoW PKI/PKE, this is a finding.'
+  desc 'fix', 'Obtain and install the DoW PKI CA certificate bundles by accessing the DoW PKI office website at cyber.mil/pki-pke.
 
-Import the DOD CA certificates.'
+Import the DoW CA certificates.'
   impact 0.5
-  tag check_id: 'C-24638r985889_chk'
+  tag check_id: 'C-24638r1260228_chk'
   tag severity: 'medium'
   tag gid: 'V-222966'
-  tag rid: 'SV-222966r985891_rule'
+  tag rid: 'SV-222966r1264557_rule'
   tag stig_id: 'TCAT-AS-000700'
   tag gtitle: 'SRG-APP-000175-AS-000124'
-  tag fix_id: 'F-24627r985890_fix'
+  tag fix_id: 'F-24627r1260229_fix'
   tag 'documentable'
   tag legacy: ['SV-111457', 'V-102515']
   tag cci: ['CCI-000185', 'CCI-004909']

@@ -4,6 +4,9 @@
 # The location of the base directory that can hold multiple tomcat applications
 catalina_base: "/usr/local/tomcat"
 
+# The location of the Tomcat installation (binaries in bin/ and libraries in lib/)
+catalina_home: "/usr/local/tomcat"
+
 # The number of authorized admins requiring simultaneous access to the server.
 max_active_sessions: 1
 

@@ -17,7 +17,7 @@ sudo find $CATALINA_HOME/bin -follow -maxdepth 0 -type d -print0 | sudo xargs ch
   tag check_id: 'C-24620r426288_chk'
   tag severity: 'medium'
   tag gid: 'V-222948'
-  tag rid: 'SV-222948r960939_rule'
+  tag rid: 'SV-222948r1264538_rule'
   tag stig_id: 'TCAT-AS-000390'
   tag gtitle: 'SRG-APP-000121-AS-000081'
   tag fix_id: 'F-24609r426289_fix'
@@ -27,10 +27,10 @@ sudo find $CATALINA_HOME/bin -follow -maxdepth 0 -type d -print0 | sudo xargs ch
   tag cci: ['CCI-001493', 'CCI-001494', 'CCI-001495', 'CCI-002235']
   tag nist: ['AU-9 a', 'AU-9', 'AU-9', 'AC-6 (10)']
 
-  catalina_base = input('catalina_base')
-  tomcat_bin_dir = file("#{catalina_base}/bin").mode
+  catalina_home = input('catalina_home')
+  tomcat_bin_dir = file("#{catalina_home}/bin").mode
 
-  describe '$CATALINA_BASE/bin directory permissions must be set to 750' do
+  describe '$CATALINA_HOME/bin directory permissions must be set to 750' do
     subject { tomcat_bin_dir }
     it { should cmp '0750' }
   end

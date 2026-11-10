@@ -21,7 +21,7 @@ sudo find  $CATALINA_BASE/temp -follow -maxdepth 0 -type d -print0 | sudo xargs 
   tag check_id: 'C-24662r426414_chk'
   tag severity: 'low'
   tag gid: 'V-222990'
-  tag rid: 'SV-222990r961461_rule'
+  tag rid: 'SV-222990r1264580_rule'
   tag stig_id: 'TCAT-AS-001270'
   tag gtitle: 'SRG-APP-000380-AS-000088'
   tag fix_id: 'F-24651r426415_fix'

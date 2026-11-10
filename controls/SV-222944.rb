@@ -19,7 +19,7 @@ sudo find $CATALINA_BASE/logs/* -follow -maxdepth 0 -type f -print0 | sudo xargs
   tag check_id: 'C-24616r426276_chk'
   tag severity: 'medium'
   tag gid: 'V-222944'
-  tag rid: 'SV-222944r960930_rule'
+  tag rid: 'SV-222944r1264534_rule'
   tag stig_id: 'TCAT-AS-000361'
   tag gtitle: 'SRG-APP-000118-AS-000078'
   tag fix_id: 'F-24605r426277_fix'

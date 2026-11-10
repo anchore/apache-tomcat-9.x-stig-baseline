@@ -21,7 +21,7 @@ sudo systemctl daemon-reload"
   tag check_id: 'C-24635r426333_chk'
   tag severity: 'medium'
   tag gid: 'V-222963'
-  tag rid: 'SV-222963r960972_rule'
+  tag rid: 'SV-222963r1264553_rule'
   tag stig_id: 'TCAT-AS-000610'
   tag gtitle: 'SRG-APP-000149-AS-000102'
   tag fix_id: 'F-24624r426334_fix'

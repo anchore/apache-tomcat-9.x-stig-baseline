@@ -9,32 +9,32 @@ sudo grep -i ALLOW_BACKSLASH $CATALINA_BASE/conf/catalina.properties
 
 sudo grep -i catalina_opts /etc/systemd/system/tomcat.service
 
-If org.apache.catalina.connector. ALLOW_BACKSLASH=true, this is a finding.'
+If org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH=true, this is a finding.'
   desc 'fix', %q(As a privileged user on the Tomcat server:
 
 If the finding is in the catalina.properties file, edit the $CATALINA_BASE/conf/catalina.properties file.
 
 sudo nano $CATALINA_BASE/conf/catalina.properties
 
-Change the org.apache.catalina.connector.ALLOW_BACKSLASH=true setting to =false.
+Change the org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH=true setting to =false.
 
 If the finding is in the /etc/systemd/services/tomcat/service file, edit the file using a text editor.
 
 sudo nano /etc/systemd/services/tomcat.service
 
-Locate the "Environment='CATALINA_OPTS=' line and change the -D.org.apache.catalina.connectorALLOW_BACKSLASH=true setting to =false.
+Locate the Environment='CATALINA_OPTS=' line and change the -D.org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH=true setting to =false.
 
 Restart Tomcat by running the following commands:
 sudo systemctl restart tomcat
 sudo systemctl daemon-reload)
   impact 0.5
-  tag check_id: 'C-24676r426456_chk'
+  tag check_id: 'C-24676r1135504_chk'
   tag severity: 'medium'
   tag gid: 'V-223004'
-  tag rid: 'SV-223004r961863_rule'
+  tag rid: 'SV-223004r1264595_rule'
   tag stig_id: 'TCAT-AS-001680'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag fix_id: 'F-24665r426457_fix'
+  tag fix_id: 'F-24665r1135505_fix'
   tag 'documentable'
   tag legacy: %w[SV-111531 V-102591]
   tag cci: ['CCI-000366']
@@ -52,12 +52,13 @@ sudo systemctl daemon-reload)
 
   unless service('tomcat').params.empty?
     describe service('tomcat').params['Environment'] do
-      it { should_not match '-D.org.apache.catalina.connector.ALLOW_BACKSLASH=true' }
+      # DISA's fix text writes the flag as '-D.org...'; match it with or without the dot
+      it { should_not match(/-D\.?org\.apache\.catalina\.connector\.CoyoteAdapter\.ALLOW_BACKSLASH=true/) }
     end
   end
 
   describe "#{catalina_base}/conf/catalina.properties config" do
     subject { parse_config_file("#{catalina_base}/conf/catalina.properties").params }
-    its(['org.apache.catalina.connector.ALLOW_BACKSLASH']) { should_not cmp 'true' }
+    its(['org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH']) { should_not cmp 'true' }
   end
 end
