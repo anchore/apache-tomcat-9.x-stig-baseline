@@ -24,12 +24,12 @@ sudo find $CATALINA_HOME/bin/*jar -follow -maxdepth 0 -type f -print0 | sudo xar
   tag cci: ['CCI-000164']
   tag nist: ['AU-9 a']
 
-  catalina_base = input('catalina_base')
-  tomcat_bin_files = command("ls #{catalina_base}/bin").stdout.split
-  non_compliant_files = tomcat_bin_files.select { |bin| file("#{catalina_base}/bin/#{bin}").more_permissive_than?('0640') }
+  catalina_home = input('catalina_home')
+  tomcat_bin_files = command("ls #{catalina_home}/bin").stdout.split
+  non_compliant_files = tomcat_bin_files.select { |bin| file("#{catalina_home}/bin/#{bin}").more_permissive_than?('0640') }
   jar_files = non_compliant_files.reject { |bin| File.extname(bin) != '.jar' }
 
-  describe 'Files in the $CATALINA_BASE/bin/ directory must have their permissions set to 640' do
+  describe 'Files in the $CATALINA_HOME/bin/ directory must have their permissions set to 640' do
     subject { jar_files }
     it { should be_empty }
   end

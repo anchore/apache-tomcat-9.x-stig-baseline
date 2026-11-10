@@ -31,9 +31,9 @@ Update the Tomcat production instance accordingly and ensure corrected builds ar
   tag cci: ['CCI-002385', 'CCI-002605']
   tag nist: ['SC-5 a', 'SI-2 c']
 
-  catalina_base = input('catalina_base')
-  server_version = command("#{catalina_base}/bin/version.sh | grep -i 'Server version' ").stdout.strip
-  built_date = command("#{catalina_base}/bin/version.sh | grep -i 'Server built' ").stdout.strip
+  catalina_home = input('catalina_home')
+  server_version = command("#{catalina_home}/bin/version.sh | grep -i 'Server version' ").stdout.strip
+  built_date = command("#{catalina_home}/bin/version.sh | grep -i 'Server built' ").stdout.strip
 
   describe 'The Tomcat administrator must ensure the system remains up to date on patches' do
     skip "The version and date of the this server is:\n#{server_version}\n#{built_date}\nCompare

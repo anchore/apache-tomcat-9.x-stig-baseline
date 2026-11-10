@@ -26,8 +26,8 @@ sudo find $CATALINA_HOME -maxdepth 0 \\( ! -group tomcat \\) | sudo xargs chgrp 
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1) (a)']
 
-  catalina_base = input('catalina_base')
-  tomcat_dir = file(catalina_base)
+  catalina_home = input('catalina_home')
+  tomcat_dir = file(catalina_home)
   describe tomcat_dir do
     its('owner') { should cmp 'root' }
     its('group') { should cmp 'tomcat' }
