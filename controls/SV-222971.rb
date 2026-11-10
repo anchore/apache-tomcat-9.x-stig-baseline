@@ -46,46 +46,53 @@ Set certificationVerification="true", identify the applications that are associa
   else
     catalina_base = input('catalina_base')
     tomcat_server_file = xml("#{catalina_base}/conf/server.xml")
-    connector_count = tomcat_server_file['//Connector/'].count
+    # V3R5 moved the setting from Connector clientAuth to SSLHostConfig (DISA writes
+    # "certificationVerification"; Tomcat's attribute is certificateVerification). Every host a
+    # non-loopback connector serves must require client certificates, each checked on its own; an
+    # unset attribute means Tomcat's 'none'. The Connector's clientAuth / SSLVerifyClient configure
+    # the default host (defaultSSLHostConfigName), which Tomcat creates from them when no nested
+    # SSLHostConfig has that name. A Connector without an address listens on all addresses.
+    required = /\A(true|yes|require|required)\z/i
+    loopback = ['127.0.0.1', '::1']
+    checked = 0
+    connector_count = tomcat_server_file['//Connector'].count
 
     (1..connector_count).each do |i|
-      conn = tomcat_server_file["//Connector[#{i}]/@address"]
-      if !conn.empty?
-        if conn[0] != '127.0.0.1' && conn[0] != '::1'
-          # V3R5 moved the setting from Connector clientAuth to SSLHostConfig (DISA writes
-          # "certificationVerification"; Tomcat's attribute is certificateVerification). Every host
-          # the connector serves must require client certificates: each SSLHostConfig is checked on
-          # its own. The legacy Connector clientAuth applies only to the default host (or to the
-          # connector itself when it has no SSLHostConfig); an unset attribute means Tomcat's 'none'.
-          required = /\A(true|yes|require|required)\z/i
-          conn_path = "//Connector[#{i}]"
-          client_auth = tomcat_server_file["#{conn_path}/@clientAuth"].first
-          host_count = tomcat_server_file["#{conn_path}/SSLHostConfig"].count
+      conn_path = "/descendant::Connector[#{i}]" # document order; //Connector[i] indexes within each Service
+      address = tomcat_server_file["#{conn_path}/@address"].first
+      next if loopback.include?(address)
 
-          if host_count.zero?
-            describe "Connector #{conn[0]} clientAuth" do
-              subject { client_auth.to_s }
-              it { should match required }
-            end
-          else
-            default_host = tomcat_server_file["#{conn_path}/@defaultSSLHostConfigName"].first || '_default_'
-            (1..host_count).each do |j|
-              host_path = "#{conn_path}/SSLHostConfig[#{j}]"
-              host_name = tomcat_server_file["#{host_path}/@hostName"].first || '_default_'
-              verification = tomcat_server_file["#{host_path}/@certificateVerification"].first
-              verification ||= client_auth if host_name == default_host
-              describe "Connector #{conn[0]} SSLHostConfig #{host_name} certificateVerification" do
-                subject { verification.to_s }
-                it { should match required }
-              end
-            end
-          end
+      checked += 1
+      label = "Connector #{address || '(all addresses)'}:#{tomcat_server_file["#{conn_path}/@port"].first}"
+      legacy = tomcat_server_file["#{conn_path}/@clientAuth"] + tomcat_server_file["#{conn_path}/@SSLVerifyClient"]
+      legacy = legacy.find { |v| v !~ required } || legacy.first # any non-requiring alias wins
+      default_host = tomcat_server_file["#{conn_path}/@defaultSSLHostConfigName"].first || '_default_'
+      host_names = []
+
+      (1..tomcat_server_file["#{conn_path}/SSLHostConfig"].count).each do |j|
+        host_path = "#{conn_path}/SSLHostConfig[#{j}]"
+        host_name = tomcat_server_file["#{host_path}/@hostName"].first || '_default_'
+        host_names << host_name
+        verification = tomcat_server_file["#{host_path}/@certificateVerification"].first
+        verification ||= legacy if host_name == default_host
+        describe "#{label} SSLHostConfig #{host_name} certificateVerification" do
+          subject { verification.to_s }
+          it { should match required }
         end
-      else
-        describe 'Unable to find address field on Connector element' do
-          subject { conn }
-          it { should_not be_empty }
-        end
+      end
+
+      next if host_names.include?(default_host)
+
+      describe "#{label} default host #{default_host} (Connector clientAuth / SSLVerifyClient)" do
+        subject { legacy.to_s }
+        it { should match required }
+      end
+    end
+
+    if checked.zero?
+      describe 'Connectors listening on a non-loopback address' do
+        subject { checked }
+        it { should eq 0 }
       end
     end
   end
