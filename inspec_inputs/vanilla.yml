@@ -1,7 +1,6 @@
 catalina_base: /usr/local/tomcat
 catalina_home: /usr/local/tomcat
 max_active_sessions: 1
-ssl_enabled_protocols: TLSv1.2
 behind_a_loadbalancer: false
 manager_app_installed: false
 host_manager_app_installed: false
