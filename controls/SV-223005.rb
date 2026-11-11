@@ -42,7 +42,10 @@ sudo systemctl daemon-reload)
 
   unless service('tomcat').params.empty?
     describe service('tomcat').params['Environment'] do
-      it { should match '-Dorg.apache.catalina.connector.response.ENFORCE_ENCODING_IN_GET_WRITER=true' }
+      # Tomcat reads org.apache.catalina.connector.Response (capital R), as V3R5 writes it; Java
+      # property names are case-sensitive, so a lowercase "response" setting has no effect. The value
+      # must be exactly true in any case, as Boolean.parseBoolean reads it ("true-x" is false).
+      it { should match(/-Dorg\.apache\.catalina\.connector\.Response\.ENFORCE_ENCODING_IN_GET_WRITER=(?i:true)(?=["'\s]|\z)/) }
     end
   end
 end
