@@ -36,7 +36,6 @@ Goto https://www.inspec.io/downloads/ and consult the documentation for your Ope
 inspec --version
 ```
 
-<<<<<<< HEAD
 ### How to execute this instance  
 (See: https://www.inspec.io/docs/reference/cli/)
 

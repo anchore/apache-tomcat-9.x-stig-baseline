@@ -10,9 +10,6 @@ catalina_home: "/usr/local/tomcat"
 # The number of authorized admins requiring simultaneous access to the server.
 max_active_sessions: 1
 
-# The encryption ciphers used to secure a Connector attribute
-ssl_enabled_protocols: "TLSv1.2"
-
 # A boolean parameter to check if the server is placed behind a load balancer
 behind_a_loadbalancer: true
 
